@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Render Sequence Slider</title>
+
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 50px;
+            padding: 50px;
+        }
+
+        .slider-container {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            position: relative;
+        }
+
+        img {
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+<h1 style="text-align:center;">Render Sequence Viewer</h1>
+
+<div class="slider-container">
+    <img id="slider" >
+</div>
+
+<script>
+    // ⭐ TOTAL FRAMES
+    let totalFrames = 108;
+
+    // ⭐ SPEED (change this)
+    let speed = 90;  // Fast animation (50ms per frame)
+
+    let frame = 1;
+
+    setInterval(() => {
+        frame++;
+        if (frame > totalFrames) frame = 1;
+
+        // Convert number → 4 digit format (1 → 0001)
+        let frameStr = String(frame).padStart(4, '0');
+
+        document.getElementById("slider").src =
+            `char/models/main-blender-mobel/darshni-render/testout/${frameStr}.png`;
+
+    }, speed);
+</script>
+
+</body>
+</html>

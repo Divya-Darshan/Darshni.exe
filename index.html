@@ -3,81 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress 😅👍 </title>
+    <title>Progress 😅👍</title>
+
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 50px;
+            padding: 50px;
+        }
+
+        #root {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        img {
+            display: block;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .date {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #444;
+        }
+    </style>
+
+    <!-- EXIF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+
 </head>
-
-<style>
-    body {
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f0f0f0;
-        margin: 50px;
-        padding: 50px;
-        min-height: calc(100vh - 100px);
-    }
-
-
-    #root {
-
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        height: 100%;
-        flex-direction: column;
-        gap: 20px;
-        overflow-y: auto;
-        width: 100%;
-    }
-
-   #commit {
-
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        height: 100%;
-        flex-direction: column;
-        gap: 20px;
-        overflow-y: auto;
-        width: 100%;
-    }
-
-    img {
-        display: block;
-        margin: 10px 0;
-        border: 2px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 100%;
-        height: auto;
-    }
-
-    
-</style>
-
 <body>
 
-
-<div>
 <h1>
-<center> if still there no Progress!, i believe you on [29-11-25]🫂 <a href="https://github.com/divya-darshan/darshni.exe">repo</a> </center>
+    <center>
+        if still there no Progress!, i believe you on [29-11-25]🫂  
+        <a href="https://github.com/divya-darshan/darshni.exe">repo</a>
+    </center>
 </h1>
-</div>
 
 <div id="root"></div>
-    
-</body>     
 
-<script defer >
+<script>
+const root = document.getElementById("root");
 
-    for (let i = 1; i <= 20; i++) {
-        let img = document.createElement('img');
-        img.src = './img/' + 'c' + i + '.png';
-        img.style.maxWidth = '100%';
-        img.style.height = 'auto';
-        root.appendChild(img);
-    }
-    
+// total number of images (you can change anytime)
+const TOTAL_IMAGES = 20;
 
+for (let i = 1; i <= TOTAL_IMAGES; i++) {
+
+    const container = document.createElement("div");
+    container.classList.add("image-container");
+
+    const img = document.createElement("img");
+    img.src = "./img_jpg/c" + i + ".jpg";  // IMPORTANT: use .jpg for EXIF
+    img.alt = "Image " + i;
+
+    const date = document.createElement("div");
+    date.classList.add("date");
+    date.textContent = "Reading date...";
+
+    img.onload = () => {
+        EXIF.getData(img, function () {
+            let exifDate =
+                EXIF.getTag(this, "DateTimeOriginal") ||
+                EXIF.getTag(this, "CreateDate") ||
+                EXIF.getTag(this, "ModifyDate");
+
+            if (exifDate) {
+                date.textContent = "Captured on: " + exifDate.replace(/:/g, "-");
+            } else {
+                date.textContent = "No EXIF date found";
+            }
+        });
+    };
+
+    img.onerror = () => {
+        date.textContent = "Image not found";
+    };
+
+    container.appendChild(img);
+    container.appendChild(date);
+    root.appendChild(container);
+}
 </script>
 
+</body>
 </html>

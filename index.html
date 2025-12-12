@@ -60,7 +60,7 @@
 <script>
 const root = document.getElementById("root");
 
-// total number of images (you can change anytime)
+// Change number based on how many images you have
 const TOTAL_IMAGES = 20;
 
 for (let i = 1; i <= TOTAL_IMAGES; i++) {
@@ -68,22 +68,30 @@ for (let i = 1; i <= TOTAL_IMAGES; i++) {
     const container = document.createElement("div");
     container.classList.add("image-container");
 
-    const img = document.createElement("img");
-    img.src = "./img_jpg/c" + i + ".jpg";  // IMPORTANT: use .jpg for EXIF
-    img.alt = "Image " + i;
+    // Display the PNG image
+    const imgPNG = document.createElement("img");
+    imgPNG.src = "./img/c" + i + ".png";
+    imgPNG.alt = "Image " + i;
 
+    // Date element
     const date = document.createElement("div");
     date.classList.add("date");
     date.textContent = "Reading date...";
 
-    img.onload = () => {
-        EXIF.getData(img, function () {
+    // Hidden JPG used ONLY to read EXIF metadata
+    const imgJPG = document.createElement("img");
+    imgJPG.src = "./img_jpg/c" + i + ".jpg";
+    imgJPG.style.display = "none"; // hide this one
+
+    imgJPG.onload = () => {
+        EXIF.getData(imgJPG, function () {
             let exifDate =
                 EXIF.getTag(this, "DateTimeOriginal") ||
-                EXIF.getTag(this, "CreateDate") ||
-                EXIF.getTag(this, "ModifyDate");
+                EXIF.getTag(this, "DateTimeDigitized") ||
+                EXIF.getTag(this, "DateTime");
 
             if (exifDate) {
+                // Format better: EXIF uses colons
                 date.textContent = "Captured on: " + exifDate.replace(/:/g, "-");
             } else {
                 date.textContent = "No EXIF date found";
@@ -91,15 +99,17 @@ for (let i = 1; i <= TOTAL_IMAGES; i++) {
         });
     };
 
-    img.onerror = () => {
-        date.textContent = "Image not found";
+    imgJPG.onerror = () => {
+        date.textContent = "JPG metadata missing";
     };
 
-    container.appendChild(img);
+    container.appendChild(imgPNG);
     container.appendChild(date);
+    container.appendChild(imgJPG); // hidden element
     root.appendChild(container);
 }
 </script>
+
 
 </body>
 </html>

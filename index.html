@@ -19,7 +19,7 @@
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
       --glass-border: rgba(148, 163, 184, 0.35);
-      --radius-xl: 22px;
+      --radius-xl: 24px;
       --radius-lg: 18px;
       --transition-fast: 0.18s ease;
     }
@@ -28,27 +28,26 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 18px;
       min-height: 100vh;
       color: var(--text-main);
       background:
-        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.16), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.2), transparent 55%),
-        radial-gradient(circle at 10% 100%, rgba(34, 197, 94, 0.26), transparent 60%),
-        linear-gradient(135deg, #020617 0%, #020617 38%, #020617 100%);
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.22), transparent 55%),
+        linear-gradient(135deg, #020617 0%, #020617 100%);
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 20px;
     }
 
     header {
-      max-width: 1040px;
+      max-width: 1120px;
       margin: 0 auto;
       text-align: center;
     }
 
     h1 {
-      font-size: clamp(1.3rem, 3.1vw, 1.7rem);
+      font-size: clamp(1.35rem, 3.3vw, 1.8rem);
       font-weight: 500;
       margin: 0 0 6px;
     }
@@ -76,10 +75,29 @@
     #root {
       width: 100%;
       margin-inline: auto;
-      max-width: 1040px;
+      /* MAX TWO HUGE COLUMNS */
+      max-width: 1120px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 26px;
+    }
+
+    /* at wide screens, 2 big columns */
+    @media (min-width: 1100px) {
+      #root {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* at small screens, single column full width */
+    @media (max-width: 768px) {
+      body {
+        padding: 14px;
+      }
+
+      #root {
+        gap: 20px;
+      }
     }
 
     .image-card {
@@ -88,15 +106,15 @@
       padding: 14px;
       background: linear-gradient(
           135deg,
-          rgba(15, 23, 42, 0.9),
-          rgba(15, 23, 42, 0.82)
+          rgba(15, 23, 42, 0.94),
+          rgba(15, 23, 42, 0.86)
         );
       border: 1px solid var(--glass-border);
       box-shadow:
-        0 24px 60px rgba(15, 23, 42, 0.98),
+        0 26px 70px rgba(15, 23, 42, 1),
         0 0 0 1px rgba(15, 23, 42, 1) inset;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -114,7 +132,7 @@
       position: absolute;
       inset: -40%;
       background:
-        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.15), transparent 55%),
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), transparent 55%),
         radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.18), transparent 55%);
       opacity: 0;
       pointer-events: none;
@@ -122,7 +140,6 @@
       mix-blend-mode: screen;
     }
 
-    /* subtle scanline / shine */
     .image-card::after {
       content: "";
       position: absolute;
@@ -146,8 +163,8 @@
       transform: translateY(-4px) scale(1.01);
       border-color: var(--accent-soft);
       box-shadow:
-        0 28px 72px rgba(15, 23, 42, 1),
-        0 0 25px rgba(56, 189, 248, 0.32);
+        0 30px 80px rgba(15, 23, 42, 1),
+        0 0 22px rgba(56, 189, 248, 0.35);
     }
 
     .image-card:hover::before {
@@ -163,9 +180,16 @@
       position: relative;
       overflow: hidden;
       border-radius: var(--radius-lg);
-      background: radial-gradient(circle at 0 0, #020617, #020617);
-      /* keep true 16:9 so full 1920x1080 fits */
+      background: radial-gradient(circle at 50% 50%, #020617, #020617);
+      /* HUGE 16:9 AREA */
       aspect-ratio: 16 / 9;
+    }
+
+    @media (min-width: 1100px) {
+      .image-wrapper {
+        /* taller feel on big screens */
+        aspect-ratio: 16 / 9;
+      }
     }
 
     .image-shell {
@@ -179,8 +203,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      /* show whole image, no crop */
-      object-fit: contain;
+      object-fit: contain; /* full image */
       background: radial-gradient(circle at 50% 50%, #020617, #020617);
       border-radius: var(--radius-lg);
       transform: translateZ(0);
@@ -190,7 +213,7 @@
 
     .lazy-blur {
       filter: blur(10px) saturate(1.1);
-      transform: scale(1.02);
+      transform: scale(1.01);
     }
 
     .image-card:hover img.preview {
@@ -296,24 +319,12 @@
       padding: 2px 7px;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.4);
-      background: rgba(15, 23, 42, 0.7);
+      background: rgba(15, 23, 42, 0.9);
     }
 
     .index-label {
       text-transform: uppercase;
       letter-spacing: 0.12em;
-    }
-
-    @media (max-width: 720px) {
-      body {
-        padding: 16px;
-      }
-    }
-
-    @media (min-width: 1280px) {
-      #root {
-        max-width: 1180px;
-      }
     }
   </style>
 
@@ -328,168 +339,209 @@
       </a>
     </h1>
     <div class="subtitle">
-      one **timeline** · <span>EXIF-driven</span> capture logs · full 16:9 frames.
+      one **timeline** · <span>EXIF-driven</span> capture logs · huge 16:9 frames.
     </div>
   </header>
 
   <div id="root"></div>
 
-  <script>
-    const root = document.getElementById("root");
-    const TOTAL_IMAGES = 20;
+<!-- keep the same <head>, styles, EXIF script from previous answer -->
+<!-- only JS below changed; you can drop this <script> over the old one -->
 
-    function createCard(index) {
-      const card = document.createElement("div");
-      card.className = "image-card";
-      card.dataset.index = index;
+<script>
+  const root = document.getElementById("root");
+  const TOTAL_IMAGES = 20;
 
-      const wrapper = document.createElement("div");
-      wrapper.className = "image-wrapper";
+  function applyBrokenStyle(img) {
+    img.classList.remove("lazy-blur");
+    img.style.objectFit = "contain";
+    img.style.background = "#ffffff";
+    img.style.filter = "none";
+    img.src = ""; // remove broken icon
 
-      const shell = document.createElement("div");
-      shell.className = "image-shell";
+    // simple “no image” placeholder using text
+    img.style.display = "flex";
+    img.style.alignItems = "center";
+    img.style.justifyContent = "center";
 
-      const imgPNG = document.createElement("img");
-      imgPNG.className = "preview lazy-blur";
-      imgPNG.loading = "lazy";
-      imgPNG.dataset.src = `./img/c${index}.png`;
-      imgPNG.alt = `Image ${index}`;
-
-      const badge = document.createElement("div");
-      badge.className = "badge";
-      badge.innerHTML = `
-        <span class="badge-dot"></span>
-        <span class="badge-text">#${index.toString().padStart(2, "0")} · log</span>
-      `;
-
-      shell.appendChild(imgPNG);
-      wrapper.appendChild(shell);
-      wrapper.appendChild(badge);
-
-      const meta = document.createElement("div");
-      meta.className = "meta";
-
-      const date = document.createElement("div");
-      date.className = "date";
-      date.textContent = "Waiting for EXIF…";
-
-      const status = document.createElement("div");
-      status.className = "status pending";
-      status.textContent = "pending";
-
-      meta.appendChild(date);
-      meta.appendChild(status);
-
-      const subMeta = document.createElement("div");
-      subMeta.className = "sub-meta";
-
-      const chipRow = document.createElement("div");
-      chipRow.className = "chip-row";
-
-      const c1 = document.createElement("div");
-      c1.className = "chip";
-      c1.textContent = "capture log";
-
-      const c2 = document.createElement("div");
-      c2.className = "chip";
-      c2.textContent = "EXIF watch";
-
-      chipRow.appendChild(c1);
-      chipRow.appendChild(c2);
-
-      const idxLabel = document.createElement("div");
-      idxLabel.className = "index-label";
-      idxLabel.textContent = `FRAME ${index.toString().padStart(2, "0")}`;
-
-      subMeta.appendChild(chipRow);
-      subMeta.appendChild(idxLabel);
-
-      card.appendChild(wrapper);
-      card.appendChild(meta);
-      card.appendChild(subMeta);
-
-      card._img = imgPNG;
-      card._date = date;
-      card._status = status;
-
-      return card;
+    // create overlay text only once
+    if (!img._placeholderAdded) {
+      const wrapper = img.parentElement;
+      const label = document.createElement("div");
+      label.textContent = "no image";
+      label.style.position = "absolute";
+      label.style.inset = "0";
+      label.style.display = "flex";
+      label.style.alignItems = "center";
+      label.style.justifyContent = "center";
+      label.style.fontSize = "12px";
+      label.style.letterSpacing = "0.16em";
+      label.style.textTransform = "uppercase";
+      label.style.color = "#9ca3af";
+      label.style.background = "#ffffff";
+      wrapper.appendChild(label);
+      img._placeholderAdded = true;
     }
+  }
 
-    const cards = [];
-    for (let i = 1; i <= TOTAL_IMAGES; i++) {
-      const card = createCard(i);
-      cards.push(card);
-      root.appendChild(card);
-    }
+  function createCard(index) {
+    const card = document.createElement("div");
+    card.className = "image-card";
+    card.dataset.index = index;
 
-    const options = {
-      root: null,
-      rootMargin: "120px",
-      threshold: 0.12,
+    const wrapper = document.createElement("div");
+    wrapper.className = "image-wrapper";
+
+    const shell = document.createElement("div");
+    shell.className = "image-shell";
+
+    const imgPNG = document.createElement("img");
+    imgPNG.className = "preview lazy-blur";
+    imgPNG.loading = "lazy";
+    imgPNG.dataset.src = `./img/c${index}.png`;
+    imgPNG.alt = `Image ${index}`;
+
+    // FALLBACK: if src missing or broken -> white placeholder
+    imgPNG.onerror = () => {
+      applyBrokenStyle(imgPNG);
     };
 
-    function loadCardData(entry, observer) {
-      const card = entry.target;
-      const idx = card.dataset.index;
-      const imgPNG = card._img;
-      const dateEl = card._date;
-      const statusEl = card._status;
+    const badge = document.createElement("div");
+    badge.className = "badge";
+    badge.innerHTML = `
+      <span class="badge-dot"></span>
+      <span class="badge-text">#${index.toString().padStart(2, "0")} · log</span>
+    `;
 
-      if (imgPNG.dataset.src) {
-        imgPNG.src = imgPNG.dataset.src;
-        imgPNG.addEventListener("load", () => {
-          imgPNG.classList.remove("lazy-blur");
-        });
-        delete imgPNG.dataset.src;
-      }
+    shell.appendChild(imgPNG);
+    wrapper.appendChild(shell);
+    wrapper.appendChild(badge);
 
-      const imgJPG = new Image();
-      imgJPG.src = `./img_jpg/c${idx}.jpg`;
-      imgJPG.style.display = "none";
+    const meta = document.createElement("div");
+    meta.className = "meta";
 
-      imgJPG.onload = () => {
-        EXIF.getData(imgJPG, function () {
-          const raw =
-            EXIF.getTag(this, "DateTimeOriginal") ||
-            EXIF.getTag(this, "DateTimeDigitized") ||
-            EXIF.getTag(this, "DateTime");
+    const date = document.createElement("div");
+    date.className = "date";
+    date.textContent = "Waiting for EXIF…";
 
-          if (raw) {
-            const formatted = raw.replace(
-              /^(\d{4}):(\d{2}):(\d{2})/,
-              "$1-$2-$3"
-            );
-            dateEl.textContent = `Captured on: ${formatted}`;
-            statusEl.textContent = "logged";
-            statusEl.classList.remove("pending", "error");
-          } else {
-            dateEl.textContent = "No EXIF date found";
-            statusEl.textContent = "no-meta";
-            statusEl.classList.remove("pending");
-            statusEl.classList.add("error");
-          }
-        });
-      };
+    const status = document.createElement("div");
+    status.className = "status pending";
+    status.textContent = "pending";
 
-      imgJPG.onerror = () => {
-        dateEl.textContent = "JPG metadata missing";
-        statusEl.textContent = "missing";
-        statusEl.classList.remove("pending");
-        statusEl.classList.add("error");
-      };
+    meta.appendChild(date);
+    meta.appendChild(status);
 
-      card.appendChild(imgJPG);
-      observer.unobserve(card);
+    const subMeta = document.createElement("div");
+    subMeta.className = "sub-meta";
+
+    const chipRow = document.createElement("div");
+    chipRow.className = "chip-row";
+
+    const c1 = document.createElement("div");
+    c1.className = "chip";
+    c1.textContent = "capture log";
+
+    const c2 = document.createElement("div");
+    c2.className = "chip";
+    c2.textContent = "EXIF watch";
+
+    chipRow.appendChild(c1);
+    chipRow.appendChild(c2);
+
+    const idxLabel = document.createElement("div");
+    idxLabel.className = "index-label";
+    idxLabel.textContent = `FRAME ${index.toString().padStart(2, "0")}`;
+
+    subMeta.appendChild(chipRow);
+    subMeta.appendChild(idxLabel);
+
+    card.appendChild(wrapper);
+    card.appendChild(meta);
+    card.appendChild(subMeta);
+
+    card._img = imgPNG;
+    card._date = date;
+    card._status = status;
+
+    return card;
+  }
+
+  const cards = [];
+  for (let i = 1; i <= TOTAL_IMAGES; i++) {
+    const card = createCard(i);
+    cards.push(card);
+    root.appendChild(card);
+  }
+
+  const options = {
+    root: null,
+    rootMargin: "120px",
+    threshold: 0.12,
+  };
+
+  function loadCardData(entry, observer) {
+    const card = entry.target;
+    const idx = card.dataset.index;
+    const imgPNG = card._img;
+    const dateEl = card._date;
+    const statusEl = card._status;
+
+    if (imgPNG.dataset.src) {
+      imgPNG.src = imgPNG.dataset.src;
+      imgPNG.addEventListener("load", () => {
+        imgPNG.classList.remove("lazy-blur");
+      });
+      delete imgPNG.dataset.src;
     }
 
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        loadCardData(entry, obs);
-      });
-    }, options);
+    const imgJPG = new Image();
+    imgJPG.src = `./img_jpg/c${idx}.jpg`;
+    imgJPG.style.display = "none";
 
-    cards.forEach((card) => observer.observe(card));
-  </script>
+    imgJPG.onload = () => {
+      EXIF.getData(imgJPG, function () {
+        const raw =
+          EXIF.getTag(this, "DateTimeOriginal") ||
+          EXIF.getTag(this, "DateTimeDigitized") ||
+          EXIF.getTag(this, "DateTime");
+
+        if (raw) {
+          const formatted = raw.replace(
+            /^(\d{4}):(\d{2}):(\d{2})/,
+            "$1-$2-$3"
+          );
+          dateEl.textContent = `Captured on: ${formatted}`;
+          statusEl.textContent = "logged";
+          statusEl.classList.remove("pending", "error");
+        } else {
+          dateEl.textContent = "No EXIF date found";
+          statusEl.textContent = "no-meta";
+          statusEl.classList.remove("pending");
+          statusEl.classList.add("error");
+        }
+      });
+    };
+
+    imgJPG.onerror = () => {
+      dateEl.textContent = "JPG metadata missing";
+      statusEl.textContent = "missing";
+      statusEl.classList.remove("pending");
+      statusEl.classList.add("error");
+    };
+
+    card.appendChild(imgJPG);
+    observer.unobserve(card);
+  }
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadCardData(entry, obs);
+    });
+  }, options);
+
+  cards.forEach((card) => observer.observe(card));
+</script>
+
 </body>
 </html>

@@ -1,115 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress 😅👍</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progress 😅👍</title>
 
-    <style>
-        body {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f0f0;
-            margin: 50px;
-            padding: 50px;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        #root {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-        }
+    :root {
+      --bg: #020617;
+      --accent: #38bdf8;
+      --accent-2: #a855f7;
+      --accent-soft: rgba(56, 189, 248, 0.25);
+      --danger: #fb7185;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --glass-border: rgba(148, 163, 184, 0.35);
+      --radius-xl: 22px;
+      --radius-lg: 18px;
+      --transition-fast: 0.18s ease;
+    }
 
-        img {
-            display: block;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-        }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.16), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.2), transparent 55%),
+        radial-gradient(circle at 10% 100%, rgba(34, 197, 94, 0.26), transparent 60%),
+        linear-gradient(135deg, #020617 0%, #020617 38%, #020617 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
 
-        .image-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    header {
+      max-width: 1040px;
+      margin: 0 auto;
+      text-align: center;
+    }
 
-        .date {
-            margin-top: 5px;
-            font-size: 14px;
-            color: #444;
-        }
-    </style>
+    h1 {
+      font-size: clamp(1.3rem, 3.1vw, 1.7rem);
+      font-weight: 500;
+      margin: 0 0 6px;
+    }
 
-    <!-- EXIF library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    h1 a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(56, 189, 248, 0.6);
+      padding-bottom: 2px;
+    }
 
+    h1 a:hover {
+      border-bottom-style: solid;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .subtitle span {
+      color: var(--accent);
+    }
+
+    #root {
+      width: 100%;
+      margin-inline: auto;
+      max-width: 1040px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .image-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      padding: 14px;
+      background: linear-gradient(
+          135deg,
+          rgba(15, 23, 42, 0.9),
+          rgba(15, 23, 42, 0.82)
+        );
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.98),
+        0 0 0 1px rgba(15, 23, 42, 1) inset;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      transform-origin: center;
+      transition:
+        transform var(--transition-fast),
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    .image-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.15), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.18), transparent 55%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-fast);
+      mix-blend-mode: screen;
+    }
+
+    /* subtle scanline / shine */
+    .image-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(148, 163, 184, 0.08) 40%,
+        transparent 70%
+      );
+      opacity: 0;
+      transform: translateX(-20%);
+      pointer-events: none;
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+      mix-blend-mode: screen;
+    }
+
+    .image-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: var(--accent-soft);
+      box-shadow:
+        0 28px 72px rgba(15, 23, 42, 1),
+        0 0 25px rgba(56, 189, 248, 0.32);
+    }
+
+    .image-card:hover::before {
+      opacity: 1;
+    }
+
+    .image-card:hover::after {
+      opacity: 1;
+      transform: translateX(5%);
+    }
+
+    .image-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0, #020617, #020617);
+      /* keep true 16:9 so full 1920x1080 fits */
+      aspect-ratio: 16 / 9;
+    }
+
+    .image-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    img.preview {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      /* show whole image, no crop */
+      object-fit: contain;
+      background: radial-gradient(circle at 50% 50%, #020617, #020617);
+      border-radius: var(--radius-lg);
+      transform: translateZ(0);
+      transition: transform 0.28s ease, filter 0.28s ease;
+      filter: saturate(1.05) contrast(1.03);
+    }
+
+    .lazy-blur {
+      filter: blur(10px) saturate(1.1);
+      transform: scale(1.02);
+    }
+
+    .image-card:hover img.preview {
+      transform: scale(1.02);
+      filter: saturate(1.15) contrast(1.06);
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+    }
+
+    .badge-text {
+      opacity: 0.82;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding-inline: 3px;
+      gap: 10px;
+    }
+
+    .date {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(
+        circle at 0 0,
+        rgba(56, 189, 248, 0.16),
+        transparent 65%
+      );
+      color: #6ee7b7;
+      flex-shrink: 0;
+    }
+
+    .status.pending {
+      color: #fbbf24;
+      background: radial-gradient(
+        circle at 0 0,
+        rgba(251, 191, 36, 0.16),
+        transparent 65%
+      );
+    }
+
+    .status.error {
+      color: var(--danger);
+      background: radial-gradient(
+        circle at 0 0,
+        rgba(248, 113, 113, 0.16),
+        transparent 65%
+      );
+    }
+
+    .sub-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #6b7280;
+      padding-inline: 3px;
+      margin-top: 2px;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.7);
+    }
+
+    .index-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 16px;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      #root {
+        max-width: 1180px;
+      }
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
 </head>
 <body>
+  <header>
+    <h1>
+      if still there no Progress!, i believe you on [29-11-25]🫂
+      <a href="https://github.com/divya-darshan/darshni.exe" target="_blank" rel="noreferrer">
+        repo
+      </a>
+    </h1>
+    <div class="subtitle">
+      one **timeline** · <span>EXIF-driven</span> capture logs · full 16:9 frames.
+    </div>
+  </header>
 
-<h1>
-    <center>
-        if still there no Progress!, i believe you on [29-11-25]🫂  
-        <a href="https://github.com/divya-darshan/darshni.exe">repo</a>
-    </center>
-</h1>
+  <div id="root"></div>
 
-<div id="root"></div>
+  <script>
+    const root = document.getElementById("root");
+    const TOTAL_IMAGES = 20;
 
-<script>
-const root = document.getElementById("root");
+    function createCard(index) {
+      const card = document.createElement("div");
+      card.className = "image-card";
+      card.dataset.index = index;
 
-// Change number based on how many images you have
-const TOTAL_IMAGES = 20;
+      const wrapper = document.createElement("div");
+      wrapper.className = "image-wrapper";
 
-for (let i = 1; i <= TOTAL_IMAGES; i++) {
+      const shell = document.createElement("div");
+      shell.className = "image-shell";
 
-    const container = document.createElement("div");
-    container.classList.add("image-container");
+      const imgPNG = document.createElement("img");
+      imgPNG.className = "preview lazy-blur";
+      imgPNG.loading = "lazy";
+      imgPNG.dataset.src = `./img/c${index}.png`;
+      imgPNG.alt = `Image ${index}`;
 
-    // Display the PNG image
-    const imgPNG = document.createElement("img");
-    imgPNG.src = "./img/c" + i + ".png";
-    imgPNG.alt = "Image " + i;
+      const badge = document.createElement("div");
+      badge.className = "badge";
+      badge.innerHTML = `
+        <span class="badge-dot"></span>
+        <span class="badge-text">#${index.toString().padStart(2, "0")} · log</span>
+      `;
 
-    // Date element
-    const date = document.createElement("div");
-    date.classList.add("date");
-    date.textContent = "Reading date...";
+      shell.appendChild(imgPNG);
+      wrapper.appendChild(shell);
+      wrapper.appendChild(badge);
 
-    // Hidden JPG used ONLY to read EXIF metadata
-    const imgJPG = document.createElement("img");
-    imgJPG.src = "./img_jpg/c" + i + ".jpg";
-    imgJPG.style.display = "none"; // hide this one
+      const meta = document.createElement("div");
+      meta.className = "meta";
 
-    imgJPG.onload = () => {
-        EXIF.getData(imgJPG, function () {
-            let exifDate =
-                EXIF.getTag(this, "DateTimeOriginal") ||
-                EXIF.getTag(this, "DateTimeDigitized") ||
-                EXIF.getTag(this, "DateTime");
+      const date = document.createElement("div");
+      date.className = "date";
+      date.textContent = "Waiting for EXIF…";
 
-            if (exifDate) {
-                // Format better: EXIF uses colons
-                date.textContent = "Captured on: " + exifDate.replace(/:/g, "-");
-            } else {
-                date.textContent = "No EXIF date found";
-            }
+      const status = document.createElement("div");
+      status.className = "status pending";
+      status.textContent = "pending";
+
+      meta.appendChild(date);
+      meta.appendChild(status);
+
+      const subMeta = document.createElement("div");
+      subMeta.className = "sub-meta";
+
+      const chipRow = document.createElement("div");
+      chipRow.className = "chip-row";
+
+      const c1 = document.createElement("div");
+      c1.className = "chip";
+      c1.textContent = "capture log";
+
+      const c2 = document.createElement("div");
+      c2.className = "chip";
+      c2.textContent = "EXIF watch";
+
+      chipRow.appendChild(c1);
+      chipRow.appendChild(c2);
+
+      const idxLabel = document.createElement("div");
+      idxLabel.className = "index-label";
+      idxLabel.textContent = `FRAME ${index.toString().padStart(2, "0")}`;
+
+      subMeta.appendChild(chipRow);
+      subMeta.appendChild(idxLabel);
+
+      card.appendChild(wrapper);
+      card.appendChild(meta);
+      card.appendChild(subMeta);
+
+      card._img = imgPNG;
+      card._date = date;
+      card._status = status;
+
+      return card;
+    }
+
+    const cards = [];
+    for (let i = 1; i <= TOTAL_IMAGES; i++) {
+      const card = createCard(i);
+      cards.push(card);
+      root.appendChild(card);
+    }
+
+    const options = {
+      root: null,
+      rootMargin: "120px",
+      threshold: 0.12,
+    };
+
+    function loadCardData(entry, observer) {
+      const card = entry.target;
+      const idx = card.dataset.index;
+      const imgPNG = card._img;
+      const dateEl = card._date;
+      const statusEl = card._status;
+
+      if (imgPNG.dataset.src) {
+        imgPNG.src = imgPNG.dataset.src;
+        imgPNG.addEventListener("load", () => {
+          imgPNG.classList.remove("lazy-blur");
         });
-    };
+        delete imgPNG.dataset.src;
+      }
 
-    imgJPG.onerror = () => {
-        date.textContent = "JPG metadata missing";
-    };
+      const imgJPG = new Image();
+      imgJPG.src = `./img_jpg/c${idx}.jpg`;
+      imgJPG.style.display = "none";
 
-    container.appendChild(imgPNG);
-    container.appendChild(date);
-    container.appendChild(imgJPG); // hidden element
-    root.appendChild(container);
-}
-</script>
+      imgJPG.onload = () => {
+        EXIF.getData(imgJPG, function () {
+          const raw =
+            EXIF.getTag(this, "DateTimeOriginal") ||
+            EXIF.getTag(this, "DateTimeDigitized") ||
+            EXIF.getTag(this, "DateTime");
 
+          if (raw) {
+            const formatted = raw.replace(
+              /^(\d{4}):(\d{2}):(\d{2})/,
+              "$1-$2-$3"
+            );
+            dateEl.textContent = `Captured on: ${formatted}`;
+            statusEl.textContent = "logged";
+            statusEl.classList.remove("pending", "error");
+          } else {
+            dateEl.textContent = "No EXIF date found";
+            statusEl.textContent = "no-meta";
+            statusEl.classList.remove("pending");
+            statusEl.classList.add("error");
+          }
+        });
+      };
 
+      imgJPG.onerror = () => {
+        dateEl.textContent = "JPG metadata missing";
+        statusEl.textContent = "missing";
+        statusEl.classList.remove("pending");
+        statusEl.classList.add("error");
+      };
+
+      card.appendChild(imgJPG);
+      observer.unobserve(card);
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        loadCardData(entry, obs);
+      });
+    }, options);
+
+    cards.forEach((card) => observer.observe(card));
+  </script>
 </body>
 </html>

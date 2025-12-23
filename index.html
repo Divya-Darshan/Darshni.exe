@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Progress 😅👍</title>
+  <title>Progress 😅👍</title> <!-- sh!t code 🥲23/12/25 -->
 
   <style>
     * {
@@ -75,32 +75,28 @@
     #root {
       width: 100%;
       margin-inline: auto;
-      /* MAX TWO HUGE COLUMNS */
       max-width: 1120px;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       gap: 26px;
     }
 
-    /* at wide screens, 2 big columns */
     @media (min-width: 1100px) {
       #root {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    /* at small screens, single column full width */
     @media (max-width: 768px) {
       body {
         padding: 14px;
       }
-
       #root {
         gap: 20px;
       }
     }
 
-    .image-card {
+    .card-base {
       position: relative;
       border-radius: var(--radius-xl);
       padding: 14px;
@@ -127,7 +123,7 @@
         background var(--transition-fast);
     }
 
-    .image-card::before {
+    .card-base::before {
       content: "";
       position: absolute;
       inset: -40%;
@@ -140,7 +136,7 @@
       mix-blend-mode: screen;
     }
 
-    .image-card::after {
+    .card-base::after {
       content: "";
       position: absolute;
       inset: 0;
@@ -159,7 +155,7 @@
       mix-blend-mode: screen;
     }
 
-    .image-card:hover {
+    .card-base:hover {
       transform: translateY(-4px) scale(1.01);
       border-color: var(--accent-soft);
       box-shadow:
@@ -167,32 +163,26 @@
         0 0 22px rgba(56, 189, 248, 0.35);
     }
 
-    .image-card:hover::before {
+    .card-base:hover::before {
       opacity: 1;
     }
 
-    .image-card:hover::after {
+    .card-base:hover::after {
       opacity: 1;
       transform: translateX(5%);
     }
 
-    .image-wrapper {
+    .image-wrapper,
+    .video-wrapper {
       position: relative;
       overflow: hidden;
       border-radius: var(--radius-lg);
       background: radial-gradient(circle at 50% 50%, #020617, #020617);
-      /* HUGE 16:9 AREA */
       aspect-ratio: 16 / 9;
     }
 
-    @media (min-width: 1100px) {
-      .image-wrapper {
-        /* taller feel on big screens */
-        aspect-ratio: 16 / 9;
-      }
-    }
-
-    .image-shell {
+    .image-shell,
+    .video-shell {
       position: relative;
       width: 100%;
       height: 100%;
@@ -203,7 +193,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain; /* full image */
+      object-fit: contain;
       background: radial-gradient(circle at 50% 50%, #020617, #020617);
       border-radius: var(--radius-lg);
       transform: translateZ(0);
@@ -216,7 +206,7 @@
       transform: scale(1.01);
     }
 
-    .image-card:hover img.preview {
+    .card-base:hover img.preview {
       transform: scale(1.02);
       filter: saturate(1.15) contrast(1.06);
     }
@@ -326,6 +316,46 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
     }
+
+    /* VIDEO specific */
+    .video-card {
+      grid-column: 1 / -1; /* full row width */
+    }
+
+    .video-shell video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      border-radius: var(--radius-lg);
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      pointer-events: none;
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 55%);
+      mix-blend-mode: screen;
+    }
+
+    .video-badge {
+      right: 14px;
+      left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .video-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #ef4444;
+      box-shadow: 0 0 14px rgba(248, 113, 113, 1);
+    }
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
@@ -339,54 +369,88 @@
       </a>
     </h1>
     <div class="subtitle">
-      one **timeline** · <span>EXIF-driven</span> capture logs · huge 16:9 frames.
+      one **timeline** · <span>EXIF-driven</span> capture logs · huge 16:9 frames + trailer.
     </div>
   </header>
 
   <div id="root"></div>
 
-<!-- keep the same <head>, styles, EXIF script from previous answer -->
-<!-- only JS below changed; you can drop this <script> over the old one -->
-
 <script>
   const root = document.getElementById("root");
   const TOTAL_IMAGES = 20;
+  const VIDEO_PATHS = [
+    // add more paths here when you have more videos
+    "char/models/main-blender-mobel/darshni-render/testout/sample.mkv",
+  ];
 
-  function applyBrokenStyle(img) {
-    img.classList.remove("lazy-blur");
-    img.style.objectFit = "contain";
-    img.style.background = "#ffffff";
-    img.style.filter = "none";
-    img.src = ""; // remove broken icon
+  function createVideoCard(src, labelText) {
+    const card = document.createElement("div");
+    card.className = "card-base video-card";
 
-    // simple “no image” placeholder using text
-    img.style.display = "flex";
-    img.style.alignItems = "center";
-    img.style.justifyContent = "center";
+    const wrapper = document.createElement("div");
+    wrapper.className = "video-wrapper";
 
-    // create overlay text only once
-    if (!img._placeholderAdded) {
-      const wrapper = img.parentElement;
-      const label = document.createElement("div");
-      label.textContent = "no image";
-      label.style.position = "absolute";
-      label.style.inset = "0";
-      label.style.display = "flex";
-      label.style.alignItems = "center";
-      label.style.justifyContent = "center";
-      label.style.fontSize = "12px";
-      label.style.letterSpacing = "0.16em";
-      label.style.textTransform = "uppercase";
-      label.style.color = "#9ca3af";
-      label.style.background = "#ffffff";
-      wrapper.appendChild(label);
-      img._placeholderAdded = true;
+    const shell = document.createElement("div");
+    shell.className = "video-shell";
+
+    const video = document.createElement("video");
+    video.controls = true;
+    video.preload = "metadata";
+    video.src = src;
+
+    const overlay = document.createElement("div");
+    overlay.className = "video-overlay";
+
+    shell.appendChild(video);
+    shell.appendChild(overlay);
+    wrapper.appendChild(shell);
+
+    const badge = document.createElement("div");
+    badge.className = "badge video-badge";
+    badge.innerHTML = `
+      <span class="video-dot"></span>
+      <span class="badge-text">${labelText}</span>
+    `;
+    wrapper.appendChild(badge);
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+
+    const date = document.createElement("div");
+    date.className = "date";
+    date.textContent = "Trailer · full 16:9 space";
+
+    const status = document.createElement("div");
+    status.className = "status";
+    status.textContent = "playable";
+
+    meta.appendChild(date);
+    meta.appendChild(status);
+
+    card.appendChild(wrapper);
+    card.appendChild(meta);
+
+    // optional: auto-pause when off-screen
+    if ("IntersectionObserver" in window) {
+      const vObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting && !video.paused) {
+              video.pause();
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      vObserver.observe(card);
     }
+
+    return card;
   }
 
-  function createCard(index) {
+  function createImageCard(index) {
     const card = document.createElement("div");
-    card.className = "image-card";
+    card.className = "card-base";
     card.dataset.index = index;
 
     const wrapper = document.createElement("div");
@@ -401,9 +465,28 @@
     imgPNG.dataset.src = `./img/c${index}.png`;
     imgPNG.alt = `Image ${index}`;
 
-    // FALLBACK: if src missing or broken -> white placeholder
     imgPNG.onerror = () => {
-      applyBrokenStyle(imgPNG);
+      imgPNG.classList.remove("lazy-blur");
+      imgPNG.style.objectFit = "contain";
+      imgPNG.style.background = "#ffffff";
+      imgPNG.style.filter = "none";
+      imgPNG.src = "";
+      if (!imgPNG._placeholderAdded) {
+        const label = document.createElement("div");
+        label.textContent = "no image";
+        label.style.position = "absolute";
+        label.style.inset = "0";
+        label.style.display = "flex";
+        label.style.alignItems = "center";
+        label.style.justifyContent = "center";
+        label.style.fontSize = "12px";
+        label.style.letterSpacing = "0.16em";
+        label.style.textTransform = "uppercase";
+        label.style.color = "#9ca3af";
+        label.style.background = "#ffffff";
+        shell.appendChild(label);
+        imgPNG._placeholderAdded = true;
+      }
     };
 
     const badge = document.createElement("div");
@@ -466,13 +549,32 @@
     return card;
   }
 
-  const cards = [];
+  // build all image cards first
+  const imageCards = [];
   for (let i = 1; i <= TOTAL_IMAGES; i++) {
-    const card = createCard(i);
-    cards.push(card);
-    root.appendChild(card);
+    imageCards.push(createImageCard(i));
   }
 
+  // choose random positions for videos among images
+  const allCards = [...imageCards];
+
+  VIDEO_PATHS.forEach((src, idx) => {
+    const label = `darshni · trailer ${idx + 1}`;
+    const videoCard = createVideoCard(src, label);
+
+    // random index between 1 and allCards.length - 1
+    // (so not always at very top or very bottom)
+    const min = 1;
+    const max = allCards.length - 1;
+    const insertIndex = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    allCards.splice(insertIndex, 0, videoCard);
+  });
+
+  // append all to DOM in this mixed order
+  allCards.forEach((card) => root.appendChild(card));
+
+  // EXIF lazy loader for image cards only
   const options = {
     root: null,
     rootMargin: "120px",
@@ -482,11 +584,16 @@
   function loadCardData(entry, observer) {
     const card = entry.target;
     const idx = card.dataset.index;
+    if (!idx) {
+      observer.unobserve(card);
+      return;
+    }
+
     const imgPNG = card._img;
     const dateEl = card._date;
     const statusEl = card._status;
 
-    if (imgPNG.dataset.src) {
+    if (imgPNG && imgPNG.dataset.src) {
       imgPNG.src = imgPNG.dataset.src;
       imgPNG.addEventListener("load", () => {
         imgPNG.classList.remove("lazy-blur");
@@ -540,8 +647,13 @@
     });
   }, options);
 
-  cards.forEach((card) => observer.observe(card));
+  allCards.forEach((card) => {
+    if (card.dataset && card.dataset.index) {
+      observer.observe(card);
+    }
+  });
 </script>
+
 
 </body>
 </html>

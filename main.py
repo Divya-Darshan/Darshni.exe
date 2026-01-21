@@ -20,7 +20,7 @@ def format_exif_date(timestamp):
     return dt.strftime("%Y:%m:%d %H:%M:%S")  # EXIF format
 
 # Correct EXIF tag IDs (works on ALL versions)
-TAG_DATETIME = 306                  # ImageIFD DateTime
+TAG_DATETIME = 306                  # ImageIFD DateTimedfsdfsdfsdfsdf
 TAG_DATETIME_ORIGINAL = 36867       # ExifIFD DateTimeOriginal
 TAG_DATETIME_DIGITIZED = 36868      # ExifIFD DateTimeDigitized (CreateDate)
 

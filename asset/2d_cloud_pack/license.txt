@@ -1,0 +1,11 @@
+Model Information:
+* title:	2D Cloud Pack
+* source:	https://sketchfab.com/3d-models/2d-cloud-pack-f4e1a14ffb2e45b9be663b1f22c002c2
+* author:	markus.blend (https://sketchfab.com/markus.blend)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "2D Cloud Pack" (https://sketchfab.com/3d-models/2d-cloud-pack-f4e1a14ffb2e45b9be663b1f22c002c2) by markus.blend (https://sketchfab.com/markus.blend) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

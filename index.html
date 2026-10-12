@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Progress 😅👍</title> <!-- sh!t code 🥲23/12/25 -->
+  <title>Progress</title>
 
   <style>
     * {
@@ -11,173 +11,91 @@
     }
 
     :root {
-      --bg: #020617;
-      --accent: #38bdf8;
-      --accent-2: #a855f7;
-      --accent-soft: rgba(56, 189, 248, 0.25);
-      --danger: #fb7185;
+      --bg: #121212;
+      --card-bg: #1a1a1a;
+      --border-color: #2a2a2a;
+      --accent: #9ca3af;
       --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --glass-border: rgba(148, 163, 184, 0.35);
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --transition-fast: 0.18s ease;
+      --text-muted: #737373;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --radius: 12px;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
-      padding: 18px;
+      padding: 24px;
       min-height: 100vh;
       color: var(--text-main);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.18), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.22), transparent 55%),
-        linear-gradient(135deg, #020617 0%, #020617 100%);
+      background-color: var(--bg);
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
     header {
-      max-width: 1120px;
+      max-width: 1000px;
       margin: 0 auto;
       text-align: center;
+      width: 100%;
     }
 
     h1 {
-      font-size: clamp(1.35rem, 3.3vw, 1.8rem);
-      font-weight: 500;
+      font-size: 1.25rem;
+      font-weight: 400;
       margin: 0 0 6px;
+      color: var(--text-main);
     }
 
     h1 a {
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(56, 189, 248, 0.6);
-      padding-bottom: 2px;
+      color: var(--text-main);
+      text-decoration: underline;
+      text-underline-offset: 4px;
     }
 
     h1 a:hover {
-      border-bottom-style: solid;
+      color: #fff;
     }
 
     .subtitle {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-    }
-
-    .subtitle span {
-      color: var(--accent);
     }
 
     #root {
       width: 100%;
       margin-inline: auto;
-      max-width: 1120px;
+      max-width: 1000px;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      gap: 26px;
+      gap: 16px;
     }
 
-    @media (min-width: 1100px) {
+    @media (min-width: 768px) {
       #root {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 768px) {
-      body {
-        padding: 14px;
-      }
-      #root {
-        gap: 20px;
-      }
-    }
-
     .card-base {
       position: relative;
-      border-radius: var(--radius-xl);
-      padding: 14px;
-      background: linear-gradient(
-          135deg,
-          rgba(15, 23, 42, 0.94),
-          rgba(15, 23, 42, 0.86)
-        );
-      border: 1px solid var(--glass-border);
-      box-shadow:
-        0 26px 70px rgba(15, 23, 42, 1),
-        0 0 0 1px rgba(15, 23, 42, 1) inset;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius);
+      padding: 12px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       gap: 10px;
-      overflow: hidden;
-      transform-origin: center;
-      transition:
-        transform var(--transition-fast),
-        border-color var(--transition-fast),
-        box-shadow var(--transition-fast),
-        background var(--transition-fast);
-    }
-
-    .card-base::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.18), transparent 55%);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition-fast);
-      mix-blend-mode: screen;
-    }
-
-    .card-base::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(148, 163, 184, 0.08) 40%,
-        transparent 70%
-      );
-      opacity: 0;
-      transform: translateX(-20%);
-      pointer-events: none;
-      transition:
-        opacity 0.3s ease,
-        transform 0.3s ease;
-      mix-blend-mode: screen;
-    }
-
-    .card-base:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: var(--accent-soft);
-      box-shadow:
-        0 30px 80px rgba(15, 23, 42, 1),
-        0 0 22px rgba(56, 189, 248, 0.35);
-    }
-
-    .card-base:hover::before {
-      opacity: 1;
-    }
-
-    .card-base:hover::after {
-      opacity: 1;
-      transform: translateX(5%);
     }
 
     .image-wrapper,
     .video-wrapper {
       position: relative;
       overflow: hidden;
-      border-radius: var(--radius-lg);
-      background: radial-gradient(circle at 50% 50%, #020617, #020617);
+      border-radius: 8px;
+      background: #000;
       aspect-ratio: 16 / 9;
     }
 
@@ -194,58 +112,32 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      background: radial-gradient(circle at 50% 50%, #020617, #020617);
-      border-radius: var(--radius-lg);
-      transform: translateZ(0);
-      transition: transform 0.28s ease, filter 0.28s ease;
-      filter: saturate(1.05) contrast(1.03);
+      border-radius: 8px;
     }
 
     .lazy-blur {
-      filter: blur(10px) saturate(1.1);
-      transform: scale(1.01);
-    }
-
-    .card-base:hover img.preview {
-      transform: scale(1.02);
-      filter: saturate(1.15) contrast(1.06);
+      filter: blur(8px);
     }
 
     .badge {
       position: absolute;
-      top: 14px;
-      left: 14px;
-      padding: 4px 10px;
+      top: 10px;
+      left: 10px;
+      padding: 3px 8px;
       border-radius: 999px;
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(15, 23, 42, 0.9);
+      font-size: 10px;
+      background: rgba(0, 0, 0, 0.7);
       color: var(--text-main);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      backdrop-filter: blur(8px);
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
-    }
-
-    .badge-text {
-      opacity: 0.82;
+      border: 1px solid var(--border-color);
     }
 
     .meta {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-muted);
-      padding-inline: 3px;
+      padding-inline: 2px;
       gap: 10px;
     }
 
@@ -257,37 +149,22 @@
     }
 
     .status {
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.09em;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: radial-gradient(
-        circle at 0 0,
-        rgba(56, 189, 248, 0.16),
-        transparent 65%
-      );
-      color: #6ee7b7;
+      letter-spacing: 0.05em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #262626;
+      color: var(--success);
       flex-shrink: 0;
     }
 
     .status.pending {
-      color: #fbbf24;
-      background: radial-gradient(
-        circle at 0 0,
-        rgba(251, 191, 36, 0.16),
-        transparent 65%
-      );
+      color: var(--warning);
     }
 
     .status.error {
       color: var(--danger);
-      background: radial-gradient(
-        circle at 0 0,
-        rgba(248, 113, 113, 0.16),
-        transparent 65%
-      );
     }
 
     .sub-meta {
@@ -295,9 +172,8 @@
       justify-content: space-between;
       align-items: center;
       font-size: 10px;
-      color: #6b7280;
-      padding-inline: 3px;
-      margin-top: 2px;
+      color: var(--text-muted);
+      padding-inline: 2px;
     }
 
     .chip-row {
@@ -306,20 +182,20 @@
     }
 
     .chip {
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: rgba(15, 23, 42, 0.9);
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #222;
+      border: 1px solid var(--border-color);
     }
 
     .index-label {
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.08em;
     }
 
     /* VIDEO specific */
     .video-card {
-      grid-column: 1 / -1; /* full row width */
+      grid-column: 1 / -1;
     }
 
     .video-shell video {
@@ -329,32 +205,12 @@
       height: 100%;
       object-fit: contain;
       background: #000;
-      border-radius: var(--radius-lg);
-    }
-
-    .video-overlay {
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius-lg);
-      pointer-events: none;
-      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 55%);
-      mix-blend-mode: screen;
+      border-radius: 8px;
     }
 
     .video-badge {
-      right: 14px;
+      right: 10px;
       left: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .video-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #ef4444;
-      box-shadow: 0 0 14px rgba(248, 113, 113, 1);
     }
   </style>
 
@@ -363,13 +219,10 @@
 <body>
   <header>
     <h1>
-      if still there no Progress!, i believe you on [29-11-25]🫂
-      <a href="https://github.com/divya-darshan/darshni.exe" target="_blank" rel="noreferrer">
-        repo
-      </a>
+      Progress Tracker &mdash; <a href="https://github.com/divya-darshan/darshni.exe" target="_blank" rel="noreferrer">repo</a>
     </h1>
     <div class="subtitle">
-      one **timeline** · <span>EXIF-driven</span> capture logs · huge 16:9 frames + trailer.
+      Timeline &middot; EXIF-driven capture logs
     </div>
   </header>
 
@@ -379,7 +232,6 @@
   const root = document.getElementById("root");
   const TOTAL_IMAGES = 20;
   const VIDEO_PATHS = [
-    // add more paths here when you have more videos
     "char/models/main-blender-mobel/darshni-render/testout/sample.mkv",
   ];
 
@@ -398,19 +250,12 @@
     video.preload = "metadata";
     video.src = src;
 
-    const overlay = document.createElement("div");
-    overlay.className = "video-overlay";
-
     shell.appendChild(video);
-    shell.appendChild(overlay);
     wrapper.appendChild(shell);
 
     const badge = document.createElement("div");
     badge.className = "badge video-badge";
-    badge.innerHTML = `
-      <span class="video-dot"></span>
-      <span class="badge-text">${labelText}</span>
-    `;
+    badge.textContent = labelText;
     wrapper.appendChild(badge);
 
     const meta = document.createElement("div");
@@ -418,7 +263,7 @@
 
     const date = document.createElement("div");
     date.className = "date";
-    date.textContent = "Trailer · full 16:9 space";
+    date.textContent = "Trailer · 16:9 space";
 
     const status = document.createElement("div");
     status.className = "status";
@@ -430,7 +275,6 @@
     card.appendChild(wrapper);
     card.appendChild(meta);
 
-    // optional: auto-pause when off-screen
     if ("IntersectionObserver" in window) {
       const vObserver = new IntersectionObserver(
         (entries) => {
@@ -467,9 +311,6 @@
 
     imgPNG.onerror = () => {
       imgPNG.classList.remove("lazy-blur");
-      imgPNG.style.objectFit = "contain";
-      imgPNG.style.background = "#ffffff";
-      imgPNG.style.filter = "none";
       imgPNG.src = "";
       if (!imgPNG._placeholderAdded) {
         const label = document.createElement("div");
@@ -479,11 +320,11 @@
         label.style.display = "flex";
         label.style.alignItems = "center";
         label.style.justifyContent = "center";
-        label.style.fontSize = "12px";
-        label.style.letterSpacing = "0.16em";
+        label.style.fontSize = "11px";
+        label.style.letterSpacing = "0.1em";
         label.style.textTransform = "uppercase";
-        label.style.color = "#9ca3af";
-        label.style.background = "#ffffff";
+        label.style.color = "var(--text-muted)";
+        label.style.background = "#181818";
         shell.appendChild(label);
         imgPNG._placeholderAdded = true;
       }
@@ -491,10 +332,7 @@
 
     const badge = document.createElement("div");
     badge.className = "badge";
-    badge.innerHTML = `
-      <span class="badge-dot"></span>
-      <span class="badge-text">#${index.toString().padStart(2, "0")} · log</span>
-    `;
+    badge.textContent = `#${index.toString().padStart(2, "0")}`;
 
     shell.appendChild(imgPNG);
     wrapper.appendChild(shell);
@@ -522,11 +360,11 @@
 
     const c1 = document.createElement("div");
     c1.className = "chip";
-    c1.textContent = "capture log";
+    c1.textContent = "log";
 
     const c2 = document.createElement("div");
     c2.className = "chip";
-    c2.textContent = "EXIF watch";
+    c2.textContent = "EXIF";
 
     chipRow.appendChild(c1);
     chipRow.appendChild(c2);
@@ -549,32 +387,24 @@
     return card;
   }
 
-  // build all image cards first
   const imageCards = [];
   for (let i = 1; i <= TOTAL_IMAGES; i++) {
     imageCards.push(createImageCard(i));
   }
 
-  // choose random positions for videos among images
   const allCards = [...imageCards];
 
   VIDEO_PATHS.forEach((src, idx) => {
-    const label = `darshni · trailer ${idx + 1}`;
+    const label = `trailer ${idx + 1}`;
     const videoCard = createVideoCard(src, label);
-
-    // random index between 1 and allCards.length - 1
-    // (so not always at very top or very bottom)
     const min = 1;
     const max = allCards.length - 1;
     const insertIndex = Math.floor(Math.random() * (max - min + 1)) + min;
-
     allCards.splice(insertIndex, 0, videoCard);
   });
 
-  // append all to DOM in this mixed order
   allCards.forEach((card) => root.appendChild(card));
 
-  // EXIF lazy loader for image cards only
   const options = {
     root: null,
     rootMargin: "120px",
@@ -617,7 +447,7 @@
             /^(\d{4}):(\d{2}):(\d{2})/,
             "$1-$2-$3"
           );
-          dateEl.textContent = `Captured on: ${formatted}`;
+          dateEl.textContent = `Captured: ${formatted}`;
           statusEl.textContent = "logged";
           statusEl.classList.remove("pending", "error");
         } else {
@@ -630,7 +460,7 @@
     };
 
     imgJPG.onerror = () => {
-      dateEl.textContent = "JPG metadata missing";
+      dateEl.textContent = "Metadata missing";
       statusEl.textContent = "missing";
       statusEl.classList.remove("pending");
       statusEl.classList.add("error");
@@ -653,7 +483,5 @@
     }
   });
 </script>
-
-
 </body>
 </html>
